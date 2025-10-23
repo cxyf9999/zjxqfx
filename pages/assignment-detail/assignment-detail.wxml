@@ -1,0 +1,138 @@
+<!--assignment-detail.wxml-->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error" wx:elif="{{error}}">
+    <text>{{error}}</text>
+    <button class="retry-btn" bindtap="loadData">重试</button>
+  </view>
+
+  <!-- 正常内容 -->
+  <view class="content" wx:else>
+    <!-- 页面头部 -->
+    <view class="header">
+      <view class="back-btn" bindtap="goBack">
+        <text class="back-icon">←</text>
+        <text>返回</text>
+      </view>
+      <text class="page-title">作业详情</text>
+      <view class="placeholder"></view>
+    </view>
+
+    <!-- 作业信息 -->
+    <view class="assignment-info">
+      <view class="info-header">
+        <text class="section-title">作业信息</text>
+      </view>
+      <view class="info-content">
+        <view class="info-item">
+          <text class="label">作业名称：</text>
+          <text class="value">{{assignmentInfo.name}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">作业类型：</text>
+          <text class="value">{{assignmentInfo.type}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">总分：</text>
+          <text class="value">{{assignmentInfo.totalScore}}分</text>
+        </view>
+        <view class="info-item">
+          <text class="label">题目数量：</text>
+          <text class="value">{{assignmentInfo.totalQuestions}}题</text>
+        </view>
+        <view class="info-item">
+          <text class="label">创建时间：</text>
+          <text class="value">{{assignmentInfo.createdAt}}</text>
+        </view>
+        <view class="info-item" wx:if="{{assignmentInfo.updatedAt}}">
+          <text class="label">更新时间：</text>
+          <text class="value">{{assignmentInfo.updatedAt}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 学生信息 -->
+    <view class="student-info">
+      <view class="info-header">
+        <text class="section-title">学生信息</text>
+      </view>
+      <view class="info-content">
+        <view class="info-item">
+          <text class="label">姓名：</text>
+          <text class="value">{{studentInfo.name}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">学号：</text>
+          <text class="value">{{studentInfo.studentNumber}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">班级：</text>
+          <text class="value">{{studentInfo.className}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 成绩信息 -->
+    <view class="score-info">
+      <view class="info-header">
+        <text class="section-title">成绩信息</text>
+        <button class="edit-btn" bindtap="editScore" wx:if="{{scoreRecord}}">编辑成绩</button>
+      </view>
+      
+      <view class="info-content" wx:if="{{scoreRecord}}">
+        <view class="score-summary">
+          <view class="total-score">
+            <text class="score-label">总分</text>
+            <text class="score-value">{{scoreRecord.totalScore}}/{{assignmentInfo.totalScore}}</text>
+            <text class="score-rate">{{scoreRecord.totalScore / assignmentInfo.totalScore * 100}}%</text>
+          </view>
+        </view>
+
+        <!-- 分题得分 -->
+        <view class="sub-scores" wx:if="{{scoreRecord.subScores && scoreRecord.subScores.length > 0}}">
+          <text class="sub-title">分题得分：</text>
+          <view class="score-list">
+            <view class="score-item" wx:for="{{scoreRecord.subScores}}" wx:key="index">
+              <text class="question-label">第{{index + 1}}题：</text>
+              <text class="question-score">{{item}}分</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 自定义题目得分 -->
+        <view class="question-scores" wx:if="{{scoreRecord.questionScores && scoreRecord.questionScores.length > 0}}">
+          <text class="sub-title">题目得分：</text>
+          <view class="score-list">
+            <view class="score-item" wx:for="{{scoreRecord.questionScores}}" wx:key="index">
+              <text class="question-label">第{{index + 1}}题：</text>
+              <text class="question-score">{{item}}分</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 评语 -->
+        <view class="comment" wx:if="{{scoreRecord.comment}}">
+          <text class="sub-title">评语：</text>
+          <text class="comment-text">{{scoreRecord.comment}}</text>
+        </view>
+
+        <!-- 批改时间 -->
+        <view class="grade-time">
+          <text class="time-label">批改时间：</text>
+          <text class="time-value">{{scoreRecord.updatedAt}}</text>
+        </view>
+      </view>
+
+      <!-- 未批改状态 -->
+      <view class="no-score" wx:else>
+        <text class="no-score-text">该学生尚未批改此作业</text>
+        <button class="grade-btn" bindtap="editScore">立即批改</button>
+      </view>
+    </view>
+  </view>
+</view>

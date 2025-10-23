@@ -1,0 +1,364 @@
+/* students.wxss */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  padding: 20rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+  margin-bottom: 20rpx;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  align-items: center;
+  text-align: center;
+}
+
+.current-class {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.student-count {
+  font-size: 24rpx;
+  color: #666;
+  white-space: nowrap;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12rpx;
+  justify-content: center;
+  padding: 0 40rpx;
+}
+
+.header-actions .btn-secondary,
+.header-actions .btn-primary {
+  min-width: 120rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  font-size: 22rpx;
+  padding: 0 16rpx;
+  white-space: nowrap;
+  flex: 1;
+  max-width: 200rpx;
+}
+
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 20rpx 20rpx;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  height: 70rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  background: #fff;
+}
+
+.search-input:focus {
+  border-color: #007aff;
+}
+
+.search-btn {
+  height: 70rpx;
+  padding: 0 24rpx;
+  background: #007aff;
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 学生列表 */
+.student-list {
+  padding: 0 20rpx;
+}
+
+.student-item {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.student-info {
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.student-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.student-number {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.student-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.student-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.student-scores {
+  font-size: 24rpx;
+  color: #007aff;
+}
+
+.student-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  flex-shrink: 0;
+}
+
+.student-actions .btn-secondary,
+.student-actions .btn-danger {
+  min-width: 100rpx;
+  height: 60rpx;
+  font-size: 24rpx;
+  padding: 0 16rpx;
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #007aff;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.form-textarea:focus {
+  border-color: #007aff;
+}
+
+/* 导入相关样式 */
+.import-instructions {
+  background: #f8f9fa;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.instruction-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.instruction-item {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+  line-height: 1.4;
+}
+
+.import-preview {
+  background: #e8f5e8;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin-top: 20rpx;
+}
+
+.preview-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2e7d32;
+  margin-bottom: 12rpx;
+}
+
+.preview-list {
+  max-height: 300rpx;
+  overflow-y: auto;
+}
+
+.preview-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8rpx 0;
+  border-bottom: 1rpx solid #c8e6c9;
+}
+
+.preview-item:last-child {
+  border-bottom: none;
+}
+
+.preview-name {
+  font-size: 26rpx;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.preview-number {
+  font-size: 24rpx;
+  color: #4caf50;
+}
+
+.import-errors {
+  background: #ffebee;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin-top: 20rpx;
+}
+
+.error-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 12rpx;
+}
+
+.error-list {
+  max-height: 200rpx;
+  overflow-y: auto;
+}
+
+.error-item {
+  display: block;
+  font-size: 24rpx;
+  color: #d32f2f;
+  margin-bottom: 8rpx;
+  line-height: 1.4;
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 600rpx;
+  max-height: 80%;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #eee;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 48rpx;
+  color: #999;
+  line-height: 1;
+  padding: 8rpx;
+}
+
+.modal-body {
+  padding: 32rpx;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 20rpx;
+  padding: 32rpx;
+  border-top: 1rpx solid #eee;
+  flex-shrink: 0;
+}
+
+.modal-footer .btn-secondary,
+.modal-footer .btn-primary {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  padding: 0 16rpx;
+}
+
+.modal-footer .btn-primary:disabled {
+  background: #ccc;
+  color: #999;
+}

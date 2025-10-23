@@ -1,0 +1,90 @@
+<!--index.wxml-->
+<view class="page">
+  <!-- 头部统计卡片 -->
+  <view class="stats-container">
+    <view class="stat-card">
+      <view class="stat-number">{{classCount}}</view>
+      <view class="stat-label">班级数量</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-number">{{assignmentCount}}</view>
+      <view class="stat-label">作业数量</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-number">{{studentCount}}</view>
+      <view class="stat-label">学生数量</view>
+    </view>
+  </view>
+
+  <!-- 当前班级信息 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">当前班级</text>
+      <button class="btn-secondary btn-small" bindtap="switchClass">切换</button>
+    </view>
+    <view class="current-class">
+      <text class="class-name">{{currentClassName}}</text>
+      <text class="class-desc">{{currentClassDesc}}</text>
+    </view>
+  </view>
+
+  <!-- 快速操作 -->
+  <view class="card">
+    <view class="card-title mb-20">快速操作</view>
+    <view class="quick-actions">
+      <view class="action-item" bindtap="goToAssignments">
+        <view class="action-icon">📝</view>
+        <view class="action-text">管理作业</view>
+      </view>
+      <view class="action-item" bindtap="goToStudents">
+        <view class="action-icon">👥</view>
+        <view class="action-text">管理学生</view>
+      </view>
+      <view class="action-item" bindtap="goToClasses">
+        <view class="action-icon">🏫</view>
+        <view class="action-text">管理班级</view>
+      </view>
+      <view class="action-item" bindtap="createAssignment">
+        <view class="action-icon">➕</view>
+        <view class="action-text">新建作业</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近作业 -->
+  <view class="card">
+    <view class="card-title mb-20">最近作业</view>
+    <view wx:if="{{recentAssignments.length > 0}}">
+      <view class="assignment-item" wx:for="{{recentAssignments}}" wx:key="id" bindtap="viewAssignment" data-id="{{item.id}}">
+        <view class="assignment-name">{{item.name}}</view>
+        <view class="assignment-meta">
+          <text class="assignment-type">{{item.type}}</text>
+          <text class="assignment-date">{{item.createdAt}}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">
+      <view class="empty-state-text">暂无作业</view>
+    </view>
+  </view>
+</view>
+
+<!-- 班级选择弹窗 -->
+<view class="modal" wx:if="{{showClassModal}}" bindtap="hideClassModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">选择班级</text>
+      <text class="modal-close" bindtap="hideClassModal">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="class-list">
+        <view class="class-item {{item.id === currentClassId ? 'active' : ''}}" 
+              wx:for="{{classes}}" wx:key="id" 
+              bindtap="selectClass" data-id="{{item.id}}">
+          <text class="class-item-name">{{item.name}}</text>
+          <text class="class-item-desc">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

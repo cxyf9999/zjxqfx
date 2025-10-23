@@ -1,0 +1,74 @@
+<!--pages/user-info/user-info.wxml-->
+<view class="container">
+  <!-- 用户头像和基本信息 -->
+  <view class="user-header" style="width: 677rpx; display: block; box-sizing: border-box">
+    <view class="avatar-section">
+      <!-- 已登录时显示静态头像 -->
+      <view class="avatar-display" wx:if="{{isLoggedIn}}">
+        <image class="avatar" src="{{userInfo.avatarUrl || '/images/user.png'}}" mode="aspectFill"></image>
+      </view>
+      <!-- 未登录时显示可点击的头像选择按钮 -->
+      <button class="avatar-wrapper" wx:else open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image class="avatar" src="{{userInfo.avatarUrl || '/images/user.png'}}" mode="aspectFill"></image>
+      </button>
+      <view class="user-name">{{userInfo.nickName || '点击设置头像'}}</view>
+    </view>
+    <view class="login-section" wx:if="{{!isLoggedIn}}">
+      <input style="height: 89rpx; display: block; box-sizing: border-box; width: 464rpx; position: relative; left: 69rpx; top: 0rpx" class="nickname-input" type="nickname" placeholder="请输入昵称" value="{{userInfo.nickName}}" bind:blur="onNicknameChange" />
+      <button class="save-btn" bindtap="saveUserInfo">保存信息</button>
+    </view>
+  </view>
+
+  <!-- 用户详细信息 -->
+  <view class="user-details" wx:if="{{isLoggedIn}}" style="width: 677rpx; display: block; box-sizing: border-box">
+    <view class="detail-item">
+      <text class="label">昵称：</text>
+      <text class="value">{{userInfo.nickName}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="label">注册时间：</text>
+      <text class="value">{{userInfo.createTime || '刚刚'}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="label">状态：</text>
+      <text class="value">已登录</text>
+    </view>
+    <view class="edit-section">
+      <button class="edit-btn" bindtap="editUserInfo">编辑信息</button>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="viewStatistics" style="width: 683rpx; display: flex; box-sizing: border-box">
+      <text class="menu-text">数据统计</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="exportData">
+      <text class="menu-text">数据导出</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="syncData" wx:if="{{isLoggedIn}}">
+      <text class="menu-text">数据同步</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="showHelp">
+      <text class="menu-text">使用帮助</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="clearData" wx:if="{{isLoggedIn}}">
+      <text class="menu-text">清除数据</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="logout" wx:if="{{isLoggedIn}}">
+      <text class="menu-text">退出登录</text>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 应用信息 -->
+  <view class="app-info">
+    <text class="app-name">指尖学情分析 v1.0</text>
+    <text class="app-desc">帮助老师更简单地管理学生作业和进行学情分析</text>
+  </view>
+</view>

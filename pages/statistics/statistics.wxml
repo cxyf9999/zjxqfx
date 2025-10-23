@@ -1,0 +1,141 @@
+<!--statistics.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header" style="position: relative; left: 0rpx; top: -141rpx; width: 412rpx; display: block; box-sizing: border-box">
+    <view class="header-info">
+      <text class="current-class" style="width: 289rpx; display: block; box-sizing: border-box; height: 54rpx; position: relative; left: 43rpx; top: -8rpx">当前班级：{{currentClassName}}</text>
+      <text class="stats-summary" style="position: relative; left: 43rpx; top: 0rpx">统计概览</text>
+    </view>
+  </view>
+
+  <!-- 总体统计 -->
+  <view class="stats-overview">
+    <view class="stats-card">
+      <text class="stats-number">{{overviewStats.totalAssignments}}</text>
+      <text class="stats-label">总作业数</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-number">{{overviewStats.totalStudents}}</text>
+      <text class="stats-label">学生总数</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-number">{{overviewStats.totalScores}}</text>
+      <text class="stats-label">已批改</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-number">{{overviewStats.averageScore}}</text>
+      <text class="stats-label">平均分</text>
+    </view>
+  </view>
+
+  <!-- 作业统计 -->
+  <view class="section">
+    <view class="section-header" style="width: 331rpx; display: flex; box-sizing: border-box; position: relative; left: 53rpx; top: 0rpx">
+      <text class="section-title" style="width: 133rpx; display: block; box-sizing: border-box; position: relative; left: 76rpx; top: 1rpx">作业统计</text>
+    </view>
+    
+    <view class="assignment-stats" wx:if="{{assignmentStats.length > 0}}">
+      <view class="assignment-stat-item" wx:for="{{assignmentStats}}" wx:key="id">
+        <view class="assignment-info">
+          <text class="assignment-name">{{item.name}}</text>
+          <text class="assignment-type">{{item.type}}</text>
+        </view>
+        <view class="assignment-progress">
+          <view class="progress-bar">
+            <view class="progress-fill" style="width: {{item.progressPercent + '%'}}"></view>
+          </view>
+          <text class="progress-text">{{item.gradedCount}}/{{item.totalCount}}</text>
+        </view>
+        <view class="assignment-score">
+          <text class="score-average">平均分：{{item.averageScore}}</text>
+          <text class="score-range">{{item.minScore}}-{{item.maxScore}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else style="width: 437rpx; display: block; box-sizing: border-box">
+      <text class="empty-text">暂无作业数据</text>
+    </view>
+  </view>
+
+  <!-- 学生排名 -->
+  <view class="section">
+    <view class="section-header" style="width: 412rpx; display: flex; box-sizing: border-box; height: 93rpx">
+      <text class="section-title">学生排名</text>
+      <picker 
+        mode="selector" 
+        range="{{rankingOptions}}" 
+        value="{{rankingType}}"
+        bindchange="onRankingTypeChange"
+      >
+        <view class="ranking-selector">
+          {{rankingOptions[rankingType]}} ▼
+        </view>
+      </picker>
+    </view>
+    
+    <view class="student-ranking" wx:if="{{studentRanking.length > 0}}">
+      <view class="ranking-item" wx:for="{{studentRanking}}" wx:key="id">
+        <view class="ranking-position">
+          <text class="position-number">{{item.rank}}</text>
+        </view>
+        <view class="student-info">
+          <text class="student-name">{{item.name}}</text>
+          <text class="student-number">{{item.studentNumber || '无学号'}}</text>
+        </view>
+        <view class="ranking-stats">
+          <text class="stat-value">{{item.displayValue}}</text>
+          <text class="stat-label">{{item.displayLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-text">暂无学生数据</text>
+    </view>
+  </view>
+
+  <!-- 成绩分布 -->
+  <view class="section">
+    <view class="section-header" style="width: 416rpx; display: flex; box-sizing: border-box">
+      <text class="section-title" style="position: relative; left: 124rpx; top: 1rpx">成绩分布</text>
+    </view>
+    
+    <view class="score-distribution" wx:if="{{scoreDistribution.length > 0}}">
+      <view class="distribution-item" wx:for="{{scoreDistribution}}" wx:key="range">
+        <view class="distribution-range">{{item.range}}</view>
+        <view class="distribution-bar">
+          <view class="distribution-fill" style="width: {{item.percentage + '%'}}"></view>
+        </view>
+        <view class="distribution-count">{{item.count}}人 ({{item.percentage + '%'}})</view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-text">暂无成绩数据</text>
+    </view>
+  </view>
+
+  <!-- 最近活动 -->
+  <view class="section">
+    <view class="section-header" style="width: 424rpx; display: flex; box-sizing: border-box">
+      <text class="section-title" style="position: relative; left: 127rpx; top: 1rpx">最近活动</text>
+    </view>
+    
+    <view class="recent-activities" wx:if="{{recentActivities.length > 0}}">
+      <view class="activity-item" wx:for="{{recentActivities}}" wx:key="id">
+        <view class="activity-icon">
+          <text class="icon">{{item.icon}}</text>
+        </view>
+        <view class="activity-content">
+          <text class="activity-title">{{item.title}}</text>
+          <text class="activity-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-text">暂无活动记录</text>
+    </view>
+  </view>
+</view>

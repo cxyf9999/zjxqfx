@@ -1,0 +1,263 @@
+/**index.wxss**/
+
+/* 统计卡片 */
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.stat-card {
+  flex: 1;
+  background-color: white;
+  border-radius: 10rpx;
+  padding: 30rpx 20rpx;
+  margin: 0 10rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:first-child {
+  margin-left: 0;
+}
+
+.stat-card:last-child {
+  margin-right: 0;
+}
+
+.stat-number {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #4CAF50;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.btn-small {
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+}
+
+/* 当前班级 */
+.current-class {
+  display: flex;
+  flex-direction: column;
+}
+
+.class-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #4CAF50;
+  margin-bottom: 10rpx;
+}
+
+.class-desc {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 快速操作 */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.action-item {
+  flex: 1;
+  min-width: calc(50% - 7.5rpx);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12rpx;
+  padding: 40rpx 20rpx;
+  margin-bottom: 15rpx;
+  text-align: center;
+  border: none;
+  box-shadow: 0 4rpx 15rpx rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-item:nth-child(1) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4rpx 15rpx rgba(102, 126, 234, 0.3);
+}
+
+.action-item:nth-child(2) {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 4rpx 15rpx rgba(240, 147, 251, 0.3);
+}
+
+.action-item:nth-child(3) {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  box-shadow: 0 4rpx 15rpx rgba(79, 172, 254, 0.3);
+}
+
+.action-item:nth-child(4) {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  box-shadow: 0 4rpx 15rpx rgba(67, 233, 123, 0.3);
+}
+
+.action-item:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 2rpx 8rpx rgba(102, 126, 234, 0.4);
+}
+
+.action-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.action-item:hover::before {
+  opacity: 1;
+}
+
+.action-icon {
+  font-size: 48rpx;
+  margin-bottom: 12rpx;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.2));
+}
+
+.action-text {
+  font-size: 26rpx;
+  color: #ffffff;
+  font-weight: 500;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 作业列表 */
+.assignment-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.assignment-item:last-child {
+  border-bottom: none;
+}
+
+.assignment-name {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.assignment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignment-type {
+  font-size: 24rpx;
+  color: #4CAF50;
+  background-color: #e8f5e8;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.assignment-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 模态框 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 80%;
+  max-height: 70%;
+  background-color: white;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 40rpx;
+  color: #999;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 30rpx;
+  max-height: 500rpx;
+  overflow-y: auto;
+}
+
+/* 班级列表 */
+.class-item {
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
+  border: 1rpx solid #e9ecef;
+}
+
+.class-item.active {
+  background-color: #e8f5e8;
+  border-color: #4CAF50;
+}
+
+.class-item-name {
+  font-size: 30rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.class-item-desc {
+  font-size: 24rpx;
+  color: #666;
+}

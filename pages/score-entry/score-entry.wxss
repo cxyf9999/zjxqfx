@@ -1,0 +1,760 @@
+/* score-entry.wxss */
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* 页面头部 */
+.header {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.assignment-info {
+  flex: 1;
+  min-width: 0;
+  margin-right: 20rpx;
+}
+
+.assignment-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.assignment-meta {
+  display: flex;
+  gap: 10rpx;
+  flex-wrap: wrap;
+}
+
+.assignment-meta text {
+  font-size: 22rpx;
+  color: #666;
+  background: #f0f0f0;
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.progress-info {
+  text-align: center;
+}
+
+.progress {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #007AFF;
+  display: block;
+}
+
+.label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 学生选择器 */
+.student-selector {
+  background: white;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.selector-header {
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.selector-header .title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 6rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+.filter-btn {
+  font-size: 28rpx;
+  padding: 0;
+  border-radius: 20rpx;
+  background: #f0f0f0;
+  color: #666;
+  border: none;
+  line-height: normal;
+  white-space: nowrap;
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50rpx;
+  box-sizing: border-box;
+}
+
+.filter-btn.active {
+  background: #007AFF;
+  color: white;
+}
+
+.student-list {
+  max-height: 400rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.student-item {
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.student-item:last-child {
+  border-bottom: none;
+}
+
+.student-item.active {
+  background: #e3f2fd;
+  border-left: 4rpx solid #007AFF;
+}
+
+.student-item:active {
+  background: #f0f0f0;
+  transform: scale(0.98);
+}
+
+.student-item:hover {
+  background: #f8f8f8;
+}
+
+.student-info {
+  flex: 1;
+  min-width: 0;
+  margin-right: 15rpx;
+}
+
+.student-info .name {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.student-info .number {
+  font-size: 22rpx;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.status {
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 100rpx;
+  max-width: 120rpx;
+}
+
+.status-badge {
+  font-size: 20rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+  margin-bottom: 6rpx;
+  white-space: nowrap;
+}
+
+.status-badge.graded {
+  background: #e8f5e8;
+  color: #4caf50;
+}
+
+.status-badge.ungraded {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.score {
+  font-size: 24rpx;
+  color: #007AFF;
+  font-weight: bold;
+}
+
+/* 成绩录入区域 */
+.score-entry {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.entry-header {
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.student-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.student-number {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 分数输入 */
+.score-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.input-label {
+  font-size: 26rpx;
+  color: #333;
+  width: 100rpx;
+  flex-shrink: 0;
+}
+
+.score-input {
+  flex: 1;
+  height: 80rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 32rpx;
+  text-align: center;
+  margin: 0 15rpx;
+  min-width: 0;
+}
+
+.score-input:focus {
+  border-color: #007AFF;
+}
+
+.max-score {
+  font-size: 26rpx;
+  color: #666;
+  width: 100rpx;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 子题分数 */
+.sub-questions, .custom-questions {
+  margin-top: 40rpx;
+}
+
+.sub-title {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+  font-weight: bold;
+}
+
+.sub-question-item, .custom-question-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  gap: 10rpx;
+}
+
+.question-label {
+  font-size: 24rpx;
+  color: #333;
+  width: 140rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub-score-input, .custom-score-input {
+  flex: 1;
+  height: 60rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 0 15rpx;
+  font-size: 28rpx;
+  text-align: center;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.sub-score-input:focus, .custom-score-input:focus {
+  border-color: #007AFF;
+}
+
+.sub-max-score, .custom-max-score {
+  font-size: 24rpx;
+  color: #666;
+  width: 80rpx;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 评语 */
+.comment-section {
+  margin-top: 40rpx;
+}
+
+.comment-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  font-weight: bold;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 120rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.comment-input:focus {
+  border-color: #007AFF;
+}
+
+.comment-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 15rpx;
+  margin-top: 40rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.save-btn, .next-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  border: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.save-btn {
+  background: #007AFF;
+  color: white;
+}
+
+.save-btn:disabled {
+  background: #ccc;
+  color: #999;
+}
+
+.next-btn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.next-btn:disabled {
+  background: #f8f8f8;
+  color: #ccc;
+}
+
+.save-btn:active:not(:disabled) {
+  background: #0056b3;
+}
+
+.next-btn:active:not(:disabled) {
+  background: #e0e0e0;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 分层级评分样式 */
+.hierarchical-scoring {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.score-summary {
+  text-align: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #eee;
+  margin-bottom: 30rpx;
+}
+
+.total-score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+
+.total-score-display .label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.total-score-display .score {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #007AFF;
+}
+
+/* 题目层级样式 */
+.level1-question {
+  margin-bottom: 30rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.level2-question {
+  margin-bottom: 20rpx;
+  border: 1rpx solid #f0f0f0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.level3-question {
+  margin-bottom: 15rpx;
+  padding: 15rpx;
+  background: #fafafa;
+  border-radius: 6rpx;
+}
+
+/* 题目头部样式 */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  background: #f8f8f8;
+}
+
+.level1-header {
+  background: #007AFF;
+  color: white;
+  font-weight: bold;
+}
+
+.level2-header {
+  background: #f0f8ff;
+  color: #007AFF;
+}
+
+.level3-header {
+  background: #fafafa;
+  color: #333;
+  padding: 10rpx 0;
+}
+
+.question-title {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.question-score {
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.max-score {
+  font-size: 22rpx;
+  color: #666;
+}
+
+/* 评分按钮样式 */
+.score-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  padding: 20rpx;
+  background: white;
+  justify-content: flex-start;
+  max-width: 520rpx; /* 限制容器宽度以确保每行6个按钮 */
+}
+
+/* 确保二级和三级题目的按钮样式正确应用 */
+.level2-question .score-buttons,
+.level3-question .score-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  padding: 20rpx;
+  background: white;
+  justify-content: flex-start;
+  max-width: 520rpx;
+}
+
+.score-btn {
+  /* 计算每行6个按钮的宽度：(520rpx - 40rpx gap) / 6 = 80rpx */
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #ddd;
+  background: white;
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+/* 确保二级和三级题目的按钮样式正确应用 */
+.level2-question .score-btn,
+.level3-question .score-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #ddd;
+  background: white;
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.score-btn:active {
+  transform: scale(0.95);
+}
+
+.score-btn.active {
+  background: #007AFF;
+  color: white;
+  border-color: #007AFF;
+}
+
+/* 确保二级和三级题目的激活按钮样式正确应用 */
+.level2-question .score-btn.active,
+.level3-question .score-btn.active {
+  background: #007AFF;
+  color: white;
+  border-color: #007AFF;
+}
+
+.score-btn.custom {
+  background: #f0f8ff;
+  border-color: #007AFF;
+  color: #007AFF;
+}
+
+.score-btn.custom.active {
+  background: #007AFF;
+  color: white;
+}
+
+.score-btn.custom-input {
+  background: #f8f8f8;
+  border-color: #ccc;
+  color: #666;
+  font-size: 22rpx;
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.score-btn.custom-input:active {
+  background: #e8e8e8;
+}
+
+/* 自定义分数弹窗样式 */
+.custom-score-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16rpx;
+  width: 600rpx;
+  max-width: 90vw;
+  position: relative;
+  z-index: 1001;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 30rpx;
+}
+
+.custom-score-input {
+  width: 100%;
+  height: 80rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 20rpx;
+  padding: 30rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 8rpx;
+  border: none;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-btn.cancel {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.modal-btn.confirm {
+  background: #007AFF;
+  color: white;
+}
+
+.modal-btn:active {
+  opacity: 0.8;
+}

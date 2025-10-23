@@ -1,0 +1,356 @@
+/* statistics.wxss */
+
+.header {
+  padding: 20rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+  margin-bottom: 20rpx;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.current-class {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.stats-summary {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 总体统计 */
+.stats-overview {
+  display: flex;
+  padding: 0 20rpx 20rpx;
+  gap: 20rpx;
+}
+
+.stats-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.stats-number {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #007aff;
+}
+
+.stats-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 区块样式 */
+.section {
+  margin-bottom: 32rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  margin: 0 20rpx 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #eee;
+  background: #f8f9fa;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.ranking-selector {
+  font-size: 28rpx;
+  color: #007aff;
+  padding: 8rpx 16rpx;
+  background: #e3f2fd;
+  border-radius: 8rpx;
+}
+
+/* 作业统计 */
+.assignment-stats {
+  padding: 0;
+}
+
+.assignment-stat-item {
+  padding: 24rpx;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.assignment-stat-item:last-child {
+  border-bottom: none;
+}
+
+.assignment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignment-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.assignment-type {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.assignment-progress {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 12rpx;
+  background: #eee;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #666;
+  min-width: 100rpx;
+  text-align: right;
+}
+
+.assignment-score {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score-average {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.score-range {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 学生排名 */
+.student-ranking {
+  padding: 0;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #eee;
+  gap: 20rpx;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.ranking-position {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #007aff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ranking-item:nth-child(1) .ranking-position {
+  background: #ffd700;
+}
+
+.ranking-item:nth-child(2) .ranking-position {
+  background: #c0c0c0;
+}
+
+.ranking-item:nth-child(3) .ranking-position {
+  background: #cd7f32;
+}
+
+.position-number {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+.student-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.student-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.student-number {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.ranking-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4rpx;
+}
+
+.stat-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #007aff;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #666;
+}
+
+/* 成绩分布 */
+.score-distribution {
+  padding: 24rpx;
+}
+
+.distribution-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  gap: 16rpx;
+}
+
+.distribution-item:last-child {
+  margin-bottom: 0;
+}
+
+.distribution-range {
+  width: 120rpx;
+  font-size: 26rpx;
+  color: #333;
+  text-align: center;
+}
+
+.distribution-bar {
+  flex: 1;
+  height: 24rpx;
+  background: #eee;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.distribution-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2196f3, #03a9f4);
+  border-radius: 12rpx;
+  transition: width 0.3s ease;
+}
+
+.distribution-count {
+  width: 140rpx;
+  font-size: 24rpx;
+  color: #666;
+  text-align: right;
+}
+
+/* 最近活动 */
+.recent-activities {
+  padding: 0;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #eee;
+  gap: 20rpx;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon {
+  font-size: 32rpx;
+}
+
+.activity-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.activity-title {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.activity-time {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 60rpx 20rpx;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}

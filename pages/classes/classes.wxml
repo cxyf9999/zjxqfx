@@ -1,0 +1,77 @@
+<!--classes.wxml-->
+<view class="page">
+  <!-- 头部操作栏 -->
+  <view class="header-actions">
+    <button class="btn-primary" bindtap="showAddModal">
+      <text class="icon">➕</text>
+      <text>新建班级</text>
+    </button>
+  </view>
+
+  <!-- 班级列表 -->
+  <view class="class-list">
+    <view wx:if="{{classes.length > 0}}">
+      <view class="list-item" wx:for="{{classes}}" wx:key="id">
+        <view class="class-info" bindtap="selectClass" data-id="{{item.id}}">
+          <view class="class-header">
+            <text class="class-name">{{item.name}}</text>
+            <view class="class-status {{item.id === currentClassId ? 'active' : ''}}">
+              {{item.id === currentClassId ? '当前班级' : ''}}
+            </view>
+          </view>
+          <text class="class-desc">{{item.description}}</text>
+          <view class="class-stats">
+            <text class="stat-item">学生: {{item.studentCount || 0}}人</text>
+            <text class="stat-item">作业: {{item.assignmentCount || 0}}个</text>
+          </view>
+          <text class="class-date">创建时间: {{item.createdAt}}</text>
+        </view>
+        <view class="class-actions">
+          <button class="btn-secondary btn-small" bindtap="editClass" data-id="{{item.id}}" style="height: 72rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 0rpx">编辑</button>
+          <button class="btn-danger btn-small" bindtap="deleteClass" data-id="{{item.id}}" wx:if="{{item.id !== 'default-class'}}">删除</button>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">
+      <view class="empty-state-icon">🏫</view>
+      <view class="empty-state-text">暂无班级</view>
+      <button class="btn-primary mt-20" bindtap="showAddModal">创建第一个班级</button>
+    </view>
+  </view>
+</view>
+
+<!-- 新建/编辑班级弹窗 -->
+<view class="modal" wx:if="{{showModal}}" bindtap="hideModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">{{isEdit ? '编辑班级' : '新建班级'}}</text>
+      <text class="modal-close" bindtap="hideModal">×</text>
+    </view>
+    <view class="modal-body">
+      <form bindsubmit="handleSubmit">
+        <view class="form-group">
+          <label class="form-label">班级名称</label>
+          <input class="form-input" 
+                 name="name" 
+                 value="{{formData.name}}" 
+                 placeholder="请输入班级名称"
+                 bindinput="onInputChange"
+                 data-field="name" />
+        </view>
+        <view class="form-group">
+          <label class="form-label">班级描述</label>
+          <textarea class="form-textarea" 
+                    name="description" 
+                    value="{{formData.description}}" 
+                    placeholder="请输入班级描述（可选）"
+                    bindinput="onInputChange"
+                    data-field="description"></textarea>
+        </view>
+        <view class="form-actions">
+          <button class="btn-secondary" bindtap="hideModal">取消</button>
+          <button class="btn-primary" formType="submit">{{isEdit ? '保存' : '创建'}}</button>
+        </view>
+      </form>
+    </view>
+  </view>
+</view>

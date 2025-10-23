@@ -1,0 +1,150 @@
+<!--assignment-edit.wxml-->
+<view class="container" style="height: 1024rpx; display: flex; box-sizing: border-box">
+  <!-- 页面头部信息 -->
+  <view class="header">
+    <view class="assignment-info">
+      <text class="assignment-title">{{assignment.title}}</text>
+      <text class="assignment-meta">{{assignment.className}} · {{assignment.date}}</text>
+    </view>
+    <view class="edit-status {{editPermission.hasPartialScores ? 'warning' : (!editPermission.canEdit ? 'readonly' : '')}}">
+      <text class="status-text" wx:if="{{editPermission.canEdit}}">可编辑</text>
+      <text class="status-text warning" wx:elif="{{editPermission.hasPartialScores}}">部分限制</text>
+      <text class="status-text readonly" wx:else>只读模式</text>
+    </view>
+  </view>
+
+  <!-- 权限提示 -->
+  <view class="permission-notice" wx:if="{{!editPermission.canEdit}}">
+    <view class="notice-icon">⚠️</view>
+    <view class="notice-text">
+      <text wx:if="{{editPermission.hasPartialScores}}">此作业已有部分批改记录，修改功能受限</text>
+      <text wx:else>此作业已完成批改，仅可查看</text>
+    </view>
+  </view>
+
+  <!-- 题目结构编辑区域 -->
+  <view class="question-structure">
+    <view class="section-header">
+      <text class="section-title">题目结构</text>
+      <view class="section-actions">
+        <button class="btn-secondary btn-small" bindtap="previewStructure" style="width: 239rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 0rpx">预览</button>
+        <button class="btn-primary btn-small" bindtap="addLevel1Question" wx:if="{{editPermission.canEdit}}" style="width: 239rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 0rpx">添加大题</button>
+      </view>
+    </view>
+
+    <!-- 一级题目列表 -->
+    <view class="question-list">
+      <view class="question-item level1" wx:for="{{assignment.questionStructure}}" wx:key="id" data-index="{{index}}">
+        <!-- 一级题目头部 -->
+        <view class="question-header">
+          <view class="question-number">{{index + 1}}.</view>
+          <view class="question-content">
+            <input class="question-title-input" 
+                   value="{{item.title}}" 
+                   placeholder="请输入题目标题"
+                   bindinput="onLevel1TitleChange"
+                   data-index="{{index}}"
+                   disabled="{{!editPermission.canEdit}}" />
+            <view class="question-score">
+              <text>{{item.totalScore}}分</text>
+            </view>
+          </view>
+          <view class="question-actions" wx:if="{{editPermission.canEdit}}">
+
+            <button class="btn-icon delete" bindtap="deleteLevel1Question" data-index="{{index}}">×</button>
+          </view>
+        </view>
+
+        <!-- 二级题目列表 -->
+        <view class="sub-questions level2" wx:if="{{item.subQuestions && item.subQuestions.length > 0}}">
+          <view class="sub-question-item" wx:for="{{item.subQuestions}}" wx:for-item="subItem" wx:for-index="subIndex" wx:key="id">
+            <view class="question-header">
+              <view class="question-number">({{subIndex + 1}})</view>
+              <view class="question-content">
+                <input class="question-title-input" 
+                       value="{{subItem.title}}" 
+                       placeholder="请输入小题标题"
+                       bindinput="onLevel2TitleChange"
+                       data-index="{{index}}"
+                       data-sub-index="{{subIndex}}"
+                       disabled="{{!editPermission.canEdit}}" />
+                <view class="question-score">
+                  <text>{{subItem.totalScore}}分</text>
+                </view>
+              </view>
+              <view class="question-actions" wx:if="{{editPermission.canEdit}}">
+                <button class="btn-icon delete" bindtap="deleteLevel2Question" data-index="{{index}}" data-sub-index="{{subIndex}}">×</button>
+              </view>
+            </view>
+
+            <!-- 三级题目列表 -->
+            <view class="sub-questions level3" wx:if="{{subItem.subQuestions && subItem.subQuestions.length > 0}}">
+              <view class="sub-question-item" wx:for="{{subItem.subQuestions}}" wx:for-item="subSubItem" wx:for-index="subSubIndex" wx:key="id">
+                <view class="question-header">
+                  <view class="question-number">{{subSubIndex + 1}})</view>
+                  <view class="question-content">
+                    <input class="question-title-input" 
+                           value="{{subSubItem.title}}" 
+                           placeholder="请输入细分题标题"
+                           bindinput="onLevel3TitleChange"
+                           data-index="{{index}}"
+                           data-sub-index="{{subIndex}}"
+                           data-sub-sub-index="{{subSubIndex}}"
+                           disabled="{{!editPermission.canEdit}}" />
+                    <view class="question-score">
+                      <input class="score-input" 
+                             type="number" 
+                             value="{{subSubItem.score}}" 
+                             bindinput="onLevel3ScoreChange"
+                             data-index="{{index}}"
+                             data-sub-index="{{subIndex}}"
+                             data-sub-sub-index="{{subSubIndex}}"
+                             disabled="{{!editPermission.canEdit}}" />
+                      <text>分</text>
+                    </view>
+                  </view>
+                  <view class="question-actions" wx:if="{{editPermission.canEdit}}">
+                    <button class="btn-icon delete" bindtap="deleteLevel3Question" data-index="{{index}}" data-sub-index="{{subIndex}}" data-sub-sub-index="{{subSubIndex}}">×</button>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!-- 添加细分题按钮 -->
+            <button class="btn-add-sub" bindtap="addLevel3Question" data-index="{{index}}" data-sub-index="{{subIndex}}" wx:if="{{editPermission.canEdit}}">+ 添加细分题</button>
+          </view>
+        </view>
+        <!-- 添加小题按钮 -->
+        <button class="btn-add-sub" bindtap="addLevel2Question" data-index="{{index}}" wx:if="{{editPermission.canEdit}}">+ 添加小题</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 总分显示 -->
+  <view class="total-score">
+    <text class="total-label">总分：</text>
+    <text class="total-value">{{assignment.totalScore}}分</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-secondary" bindtap="cancelEdit">取消</button>
+    <button class="btn-primary" bindtap="saveChanges" wx:if="{{editPermission.canEdit && hasChanges}}">保存修改</button>
+    <button class="btn-primary disabled" wx:else>保存修改</button>
+  </view>
+</view>
+
+<!-- 确认对话框 -->
+<view class="modal-overlay" wx:if="{{showConfirmDialog}}" bindtap="hideConfirmDialog">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">{{confirmDialog.title}}</text>
+    </view>
+    <view class="modal-body">
+      <text class="modal-message">{{confirmDialog.message}}</text>
+    </view>
+    <view class="modal-actions">
+      <button class="btn-secondary" bindtap="hideConfirmDialog">取消</button>
+      <button class="btn-primary" bindtap="confirmAction">确认</button>
+    </view>
+  </view>
+</view>

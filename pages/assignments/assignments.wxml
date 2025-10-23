@@ -1,0 +1,343 @@
+<!--assignments.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <!-- 班级信息区域 -->
+    <view class="header-info">
+      <text class="current-class">当前班级：{{currentClassName}}</text>
+      <text class="assignment-count">共{{assignments.length}}个作业</text>
+    </view>
+    <!-- 操作按钮区域 -->
+    <view class="header-actions">
+      <button class="btn-primary" bindtap="showAddModal">新建作业</button>
+    </view>
+  </view>
+
+  <!-- 作业列表 -->
+  <view class="assignment-list" wx:if="{{assignments.length > 0}}">
+    <view class="assignment-item" wx:for="{{assignments}}" wx:key="id">
+      <view class="assignment-info">
+        <view class="assignment-name">{{item.name}}</view>
+        <view class="assignment-meta">
+          <text class="assignment-type">{{item.type}}</text>
+          <text class="assignment-questions">{{item.questionCount}}题</text>
+          <text class="assignment-date">{{item.createdAt}}</text>
+        </view>
+        <view class="assignment-stats" wx:if="{{item.stats}}">
+          <text class="stat-item">已批改：{{item.stats.gradedCount}}/{{item.stats.totalCount}}</text>
+          <text class="stat-item">平均分：{{item.stats.averageScore}}</text>
+        </view>
+      </view>
+      <view class="assignment-actions">
+        <button class="btn-primary" data-id="{{item.id}}" bindtap="gradeAssignment">批改</button>
+        <button class="btn-secondary" data-id="{{item.id}}" bindtap="viewAssignment">查看</button>
+        <button class="btn-secondary" data-id="{{item.id}}" bindtap="editQuestions">编辑题目</button>
+        <button class="btn-secondary" data-id="{{item.id}}" bindtap="editAssignment">编辑信息</button>
+        <button class="btn-danger" data-id="{{item.id}}" bindtap="deleteAssignment">删除</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <text class="empty-text">暂无作业</text>
+    <button class="btn-primary" bindtap="showAddModal">创建第一个作业</button>
+  </view>
+
+  <!-- 新建/编辑作业弹窗 -->
+  <view class="modal" wx:if="{{showModal}}" bindtap="hideModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">{{isEdit ? '编辑作业' : '新建作业'}}</text>
+        <text class="modal-close" bindtap="hideModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="form-group">
+          <label class="form-label">作业名称</label>
+          <input 
+            class="form-input" 
+            placeholder="请输入作业名称"
+            value="{{formData.name}}"
+            data-field="name"
+            bindinput="onInputChange"
+          />
+        </view>
+
+        <view class="form-group">
+          <label class="form-label">作业类型</label>
+          <picker 
+            mode="selector" 
+            range="{{assignmentTypes}}" 
+            value="{{formData.typeIndex}}"
+            bindchange="onTypeChange"
+          >
+            <view class="picker-display">
+              {{formData.typeIndex >= 0 ? assignmentTypes[formData.typeIndex] : '请选择作业类型'}}
+            </view>
+          </picker>
+        </view>
+
+        <!-- Markdown导入功能 -->
+        <view class="form-group">
+          <label class="form-label">快速导入</label>
+          <view class="import-section">
+            <view class="import-options">
+              <button class="btn-import" bindtap="importFromMarkdown">
+                <text class="import-icon">📄</text>
+                <text class="import-text">从Markdown文件导入</text>
+              </button>
+              <text class="import-hint">支持导入结构化的题目和知识点</text>
+            </view>
+            
+            <!-- Markdown导入预览 -->
+            <view class="import-preview" wx:if="{{importPreview.show}}">
+              <view class="preview-header">
+                <text class="preview-title">导入预览</text>
+                <button class="btn-close-preview" bindtap="closeImportPreview">×</button>
+              </view>
+              <view class="preview-content">
+                <view class="preview-summary">
+                  <text class="summary-item">大题：{{importPreview.summary.level1Count}}个</text>
+                  <text class="summary-item">小题：{{importPreview.summary.level2Count}}个</text>
+                  <text class="summary-item">细分题：{{importPreview.summary.level3Count}}个</text>
+                  <text class="summary-item">总分：{{importPreview.totalScore}}分</text>
+                  <text class="summary-item">知识点：{{importPreview.summary.knowledgePointsCount}}个</text>
+                </view>
+                <view class="preview-actions">
+                  <button class="btn-secondary" bindtap="closeImportPreview">取消</button>
+                  <button class="btn-primary" bindtap="confirmImport">确认导入</button>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 三级题目结构配置 -->
+        <view class="form-group">
+          <label class="form-label">题目结构配置</label>
+          <view class="question-structure-config">
+            
+            <!-- 一级题目（大题）配置 -->
+            <view class="level-config level-1">
+              <view class="level-header">
+                <text class="level-title">一级题目（大题）</text>
+                <button class="btn-add" bindtap="addLevel1Question">+ 添加大题</button>
+              </view>
+              
+              <view class="question-list" wx:if="{{formData.questionStructure.length > 0}}">
+                <view class="question-item level-1-item" wx:for="{{formData.questionStructure}}" wx:key="index" wx:for-index="level1Index">
+                  <view class="question-header">
+                    <text class="question-title">第{{level1Index + 1}}大题</text>
+                    <view class="question-controls">
+                      <!-- 一级题目显示计算出的分数，不允许手动输入 -->
+                      <view class="score-display">
+                        <text class="calculated-score">{{item.calculatedScore || 0}}</text>
+                        <text class="score-unit">分</text>
+                        <text class="score-hint">（自动计算）</text>
+                      </view>
+                      <button class="btn-delete" data-level1="{{level1Index}}" bindtap="deleteLevel1Question">删除</button>
+                    </view>
+                  </view>
+                  
+                  <!-- 二级题目（小题）配置 -->
+                  <view class="level-config level-2">
+                    <view class="level-header">
+                      <text class="level-title">二级题目（小题）</text>
+                      <view class="header-buttons">
+                        <button class="btn-batch" wx:if="{{item.subQuestions && item.subQuestions.length > 1}}" data-level1="{{level1Index}}" bindtap="showBatchSetLevel2Score">批量设分</button>
+                        <button class="btn-add" data-level1="{{level1Index}}" bindtap="addLevel2Question">+ 添加小题</button>
+                      </view>
+                    </view>
+                    
+                    <view class="question-list" wx:if="{{item.subQuestions && item.subQuestions.length > 0}}">
+                      <view class="question-item level-2-item" wx:for="{{item.subQuestions}}" wx:key="index" wx:for-index="level2Index">
+                        <view class="question-header">
+                          <text class="question-title">第{{level2Index + 1}}小题</text>
+                          <view class="question-controls">
+                            <!-- 如果有三级题目，显示计算分数；如果没有，显示输入框 -->
+                            <view wx:if="{{item.subQuestions && item.subQuestions.length > 0}}" class="score-display">
+                              <text class="calculated-score">{{item.calculatedScore || 0}}</text>
+                              <text class="score-unit">分</text>
+                              <text class="score-hint">（自动计算）</text>
+                            </view>
+                            <view wx:else class="score-input-group">
+                              <input 
+                                class="score-input" 
+                                type="number" 
+                                placeholder="分数"
+                                value="{{item.score}}"
+                                data-level1="{{level1Index}}"
+                                data-level2="{{level2Index}}"
+                                bindinput="onLevel2ScoreChange"
+                              />
+                              <text class="score-unit">分</text>
+                            </view>
+                            <button class="btn-delete" data-level1="{{level1Index}}" data-level2="{{level2Index}}" bindtap="deleteLevel2Question">删除</button>
+                          </view>
+                        </view>
+                        
+                        <!-- 三级题目（细分题）配置 -->
+                        <view class="level-config level-3">
+                          <text class="level-title">三级题目（细分题）</text>
+                          <view class="level-header">
+                            <view class="header-buttons">
+                              <button class="btn-batch" wx:if="{{item.subQuestions && item.subQuestions.length > 1}}" data-level1="{{level1Index}}" data-level2="{{level2Index}}" bindtap="showBatchSetLevel3Score">批量设分</button>
+                              <button class="btn-add" data-level1="{{level1Index}}" data-level2="{{level2Index}}" bindtap="addLevel3Question">+ 添加细分题</button>
+                            </view>
+                          </view>
+                          
+                          <view class="question-list" wx:if="{{item.subQuestions && item.subQuestions.length > 0}}">
+                            <view class="question-item level-3-item" wx:for="{{item.subQuestions}}" wx:key="index" wx:for-index="level3Index">
+                              <text class="question-title">第{{level3Index + 1}}细分题</text>
+                              <view class="question-header">
+                                <view class="question-controls">
+                                  <input 
+                                    class="score-input" 
+                                    type="number" 
+                                    placeholder="分数"
+                                    value="{{item.score}}"
+                                    data-level1="{{level1Index}}"
+                                    data-level2="{{level2Index}}"
+                                    data-level3="{{level3Index}}"
+                                    bindinput="onLevel3ScoreChange"
+                                  />
+                                  <text class="score-unit">分</text>
+                                  <button class="btn-delete" data-level1="{{level1Index}}" data-level2="{{level2Index}}" data-level3="{{level3Index}}" bindtap="deleteLevel3Question">删除</button>
+                                </view>
+                              </view>
+                            </view>
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              
+              <!-- 空状态提示 -->
+              <view class="empty-hint" wx:if="{{formData.questionStructure.length === 0}}">
+                <text>请点击"添加大题"开始配置题目结构</text>
+              </view>
+            </view>
+            
+            <!-- 总分显示 -->
+            <view class="total-score-display">
+              <text class="total-label">总分：</text>
+              <text class="total-value">{{totalScore}}</text>
+              <text class="total-unit">分</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 评分选项 -->
+        <view class="form-group">
+          <label class="form-label">评分方式</label>
+          <radio-group bindchange="onScoringModeChange">
+            <label class="radio-item">
+              <radio value="standard" checked="{{formData.scoringMode === 'standard'}}"/>
+              <text>标准评分（对错）</text>
+            </label>
+            <label class="radio-item">
+              <radio value="custom" checked="{{formData.scoringMode === 'custom'}}"/>
+              <text>自定义分值</text>
+            </label>
+          </radio-group>
+        </view>
+
+        <!-- 自定义分值配置 -->
+        <view class="custom-scoring-config" wx:if="{{formData.scoringMode === 'custom'}}">
+          <label class="form-label">各题分值（用逗号分隔）</label>
+          <input 
+            class="form-input" 
+            placeholder="例如：10,15,20"
+            value="{{formData.customScoresText}}"
+            data-field="customScoresText"
+            bindinput="onInputChange"
+          />
+          <text class="form-hint">第1题10分，第2题15分，第3题20分</text>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="btn-secondary" bindtap="hideModal">取消</button>
+        <button class="btn-primary" bindtap="handleSubmit">{{isEdit ? '更新' : '创建'}}</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 批量设置分数弹窗 -->
+<view class="modal-overlay" wx:if="{{showBatchScoreModal}}" bindtap="hideBatchScoreModal">
+  <view class="modal-content batch-score-modal" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">批量设置分数</text>
+      <text class="modal-subtitle">{{batchScoreConfig.title}}</text>
+    </view>
+    
+    <view class="modal-body">
+      <!-- 设置模式选择 -->
+      <view class="form-group">
+        <label class="form-label">设置模式</label>
+        <radio-group bindchange="onBatchModeChange">
+          <label class="radio-item">
+            <radio value="uniform" checked="{{batchScoreConfig.mode === 'uniform'}}"/>
+            <text>统一分数</text>
+          </label>
+          <label class="radio-item">
+            <radio value="individual" checked="{{batchScoreConfig.mode === 'individual'}}"/>
+            <text>分别设置</text>
+          </label>
+        </radio-group>
+      </view>
+
+      <!-- 统一分数模式 -->
+      <view class="form-group" wx:if="{{batchScoreConfig.mode === 'uniform'}}">
+        <label class="form-label">统一分数</label>
+        <view class="score-input-group">
+          <input 
+            class="form-input score-input" 
+            type="number" 
+            placeholder="请输入分数"
+            value="{{batchScoreConfig.uniformScore}}"
+            data-field="uniformScore"
+            bindinput="onBatchScoreInputChange"
+          />
+          <text class="score-unit">分</text>
+        </view>
+      </view>
+
+      <!-- 分别设置模式 -->
+      <view class="form-group" wx:if="{{batchScoreConfig.mode === 'individual'}}">
+        <label class="form-label">分别设置分数</label>
+        <view class="individual-scores">
+          <view class="score-item" wx:for="{{batchScoreConfig.questions}}" wx:key="index">
+            <text class="question-label">{{item.label}}</text>
+            <view class="score-input-group">
+              <input 
+                class="form-input score-input" 
+                type="number" 
+                placeholder="分数"
+                value="{{item.score}}"
+                data-index="{{index}}"
+                bindinput="onIndividualScoreChange"
+              />
+              <text class="score-unit">分</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 预览总分 -->
+      <view class="form-group">
+        <label class="form-label">预览总分</label>
+        <text class="total-preview">{{batchScoreConfig.totalPreview}}分</text>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="hideBatchScoreModal">取消</button>
+      <button class="btn-primary" bindtap="confirmBatchSetScore">确认设置</button>
+    </view>
+  </view>
+</view>

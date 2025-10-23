@@ -1,0 +1,177 @@
+/**classes.wxss**/
+
+/* 头部操作栏 */
+.header-actions {
+  padding: 20rpx;
+  background-color: white;
+  margin-bottom: 20rpx;
+  border-radius: 10rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.header-actions .btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-actions .icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+/* 班级信息 */
+.class-info {
+  flex: 1;
+  padding-right: 20rpx;
+}
+
+.class-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.class-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.class-status {
+  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.class-status.active {
+  background-color: #e8f5e8;
+  color: #4CAF50;
+}
+
+.class-desc {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+  display: block;
+}
+
+.class-stats {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 10rpx;
+}
+
+.stat-item {
+  font-size: 24rpx;
+  color: #4CAF50;
+  background-color: #e8f5e8;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.class-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 班级操作 */
+.class-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.class-actions .btn-small {
+  padding: 15rpx 25rpx;
+  font-size: 24rpx;
+  min-width: 120rpx;
+}
+
+/* 列表项布局 */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30rpx;
+}
+
+/* 表单样式 */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-top: 40rpx;
+}
+
+.form-actions button {
+  flex: 1;
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 85%;
+  max-height: 80%;
+  background-color: white;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  background-color: #fafafa;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 40rpx;
+  color: #999;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 30rpx;
+  max-height: 500rpx;
+  overflow-y: auto;
+}
+
+/* 班级描述输入框样式 */
+.modal-body .form-textarea {
+  min-height: 80rpx;
+  max-height: 120rpx;
+  width: 540rpx;
+}
+
+.modal-body .form-input{
+  width: 540rpx
+}

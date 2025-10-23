@@ -1,0 +1,216 @@
+<!--score-entry.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="assignment-info">
+      <view class="assignment-name">{{assignmentInfo.name}}</view>
+      <view class="assignment-meta">
+        <text class="type">{{assignmentInfo.type}}</text>
+        <text class="questions">{{assignmentInfo.questionCount}}题</text>
+        <text class="scoring">{{assignmentInfo.scoringMode === 'standard' ? '标准计分' : '自定义计分'}}</text>
+      </view>
+    </view>
+    <view class="progress-info">
+      <text class="progress">{{gradedCount}}/{{totalStudents}}</text>
+      <text class="label">已批改</text>
+    </view>
+  </view>
+
+  <!-- 学生选择 -->
+  <view class="student-selector">
+    <view class="selector-header" style="height: 124rpx; display: flex; box-sizing: border-box">
+      <text class="title">选择学生</text>
+      <view class="filter-buttons">
+        <button class="filter-btn {{filterType === 'all' ? 'active' : ''}}" 
+                bindtap="onFilterChange" data-type="all" style="height: 41rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">全部</button>
+        <button class="filter-btn {{filterType === 'ungraded' ? 'active' : ''}}" 
+                bindtap="onFilterChange" data-type="ungraded" style="height: 41rpx; display: block; box-sizing: border-box; left: -2rpx; top: 0rpx; position: relative">未批改</button>
+        <button class="filter-btn {{filterType === 'graded' ? 'active' : ''}}" 
+                bindtap="onFilterChange" data-type="graded" style="height: 41rpx; display: block; box-sizing: border-box; left: -1rpx; top: 0rpx; position: relative">已批改</button>
+      </view>
+    </view>
+    
+    <scroll-view class="student-list" scroll-y="true">
+      <view class="student-item {{currentStudentId === item.id ? 'active' : ''}}"
+            wx:for="{{filteredStudents}}" wx:key="id"
+            bindtap="onStudentSelect" data-student="{{item}}">
+        <view class="student-info">
+          <view class="name">{{item.name}}</view>
+          <view class="number">{{item.studentNumber}}</view>
+        </view>
+        <view class="status">
+          <view class="status-badge {{item.isGraded ? 'graded' : 'ungraded'}}">
+            {{item.isGraded ? '已批改' : '未批改'}}
+          </view>
+          <view class="score" wx:if="{{item.isGraded}}">{{item.totalScore}}分</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 成绩录入区域 -->
+  <view class="score-entry" wx:if="{{currentStudent}}">
+    <view class="entry-header">
+      <view class="student-name">{{currentStudent.name}}</view>
+      <view class="student-number">学号：{{currentStudent.studentNumber}}</view>
+    </view>
+
+    <!-- 分层级按钮评分模式 -->
+    <view class="hierarchical-scoring" wx:if="{{currentScore.hierarchicalScores && currentScore.hierarchicalScores.length > 0}}">
+      <view class="score-summary">
+        <view class="total-score-display">
+          <text class="label">总分：</text>
+          <text class="score">{{currentScore.totalScore || 0}}</text>
+        </view>
+      </view>
+
+      <!-- 一级题目（大题） -->
+      <view class="level1-questions">
+        <view class="level1-question" wx:for="{{currentScore.hierarchicalScores}}" wx:key="id" wx:for-item="level1">
+          <view class="question-header level1-header">
+            <text class="question-title">{{level1.title}}</text>
+            <text class="question-score">{{level1.score || 0}} / {{level1.maxScore}}</text>
+          </view>
+
+          <!-- 二级题目（小题） -->
+          <view class="level2-questions" wx:if="{{level1.subQuestions && level1.subQuestions.length > 0}}">
+            <view class="level2-question" wx:for="{{level1.subQuestions}}" wx:key="id" wx:for-item="level2">
+              <view class="question-header level2-header">
+                <text class="question-title">{{level2.title}}</text>
+                <text class="question-score">{{level2.score || 0}} / {{level2.maxScore}}</text>
+              </view>
+
+              <!-- 三级题目（细分题）- 显示评分按钮 -->
+              <view class="level3-questions" wx:if="{{level2.subQuestions && level2.subQuestions.length > 0}}">
+                <view class="level3-question" wx:for="{{level2.subQuestions}}" wx:key="id" wx:for-item="level3">
+                  <view class="question-header level3-header">
+                    <text class="question-title">{{level3.title}}</text>
+                    <text class="max-score">满分：{{level3.maxScore}}</text>
+                  </view>
+                  <view class="score-buttons">
+                    <!-- 动态生成分数按钮，基于题目maxScore -->
+                    <button class="score-btn {{level3.score === item ? 'active' : ''}}" 
+                            wx:for="{{level3.scoreButtons}}" wx:key="*this"
+                            bindtap="onScoreButtonTap" 
+                            data-question-id="{{level3.id}}" 
+                            data-score="{{item}}">{{item}}</button>
+                    
+
+                  </view>
+                </view>
+              </view>
+
+              <!-- 二级题目没有三级题目时，显示评分按钮 -->
+              <view class="score-buttons" wx:if="{{!level2.subQuestions || level2.subQuestions.length === 0}}">
+                <!-- 动态生成分数按钮，基于题目maxScore -->
+                <button class="score-btn {{level2.score === item ? 'active' : ''}}" 
+                        wx:for="{{level2.scoreButtons}}" wx:key="*this"
+                        bindtap="onScoreButtonTap" 
+                        data-question-id="{{level2.id}}" 
+                        data-score="{{item}}">{{item}}</button>
+                
+
+              </view>
+            </view>
+          </view>
+
+          <!-- 一级题目没有二级题目时，显示评分按钮 -->
+          <view class="score-buttons" wx:if="{{!level1.subQuestions || level1.subQuestions.length === 0}}">
+            <!-- 动态生成分数按钮，基于题目maxScore -->
+            <button class="score-btn {{level1.score === item ? 'active' : ''}}" 
+                    wx:for="{{level1.scoreButtons}}" wx:key="*this"
+                    bindtap="onScoreButtonTap" 
+                    data-question-id="{{level1.id}}" 
+                    data-score="{{item}}">{{item}}</button>
+            
+
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标准计分模式（备用） -->
+    <view class="standard-scoring" wx:if="{{assignmentInfo.scoringOptions && assignmentInfo.scoringOptions.mode === 'standard' && (!currentScore.hierarchicalScores || currentScore.hierarchicalScores.length === 0)}}">
+      <view class="score-input-group">
+        <view class="input-label">总分</view>
+        <input class="score-input" type="digit" placeholder="请输入总分" 
+               value="{{currentScore.totalScore}}" 
+               bindinput="onTotalScoreInput" />
+        <text class="max-score">/ {{assignmentInfo.questionCount * 10}}</text>
+      </view>
+      
+      <!-- 子题分数 -->
+      <view class="sub-questions" wx:if="{{assignmentInfo.hasSubQuestions}}">
+        <view class="sub-title">分题得分</view>
+        <view class="sub-question-list">
+          <view class="sub-question-item" 
+                wx:for="{{assignmentInfo.subQuestionCounts}}" wx:key="index"
+                wx:for-item="subQCount" wx:for-index="subIndex">
+            <view class="question-label">第{{subIndex + 1}}题 ({{subQCount}}小题)</view>
+            <input class="sub-score-input" type="digit" 
+                   placeholder="0" 
+                   value="{{currentScore.subScores[subIndex]}}"
+                   bindinput="onSubScoreInput" 
+                   data-index="{{subIndex}}" />
+            <text class="sub-max-score">/ {{subQCount * 10}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 自定义计分模式（备用） -->
+    <view class="custom-scoring" wx:if="{{assignmentInfo.scoringOptions && assignmentInfo.scoringOptions.mode === 'custom' && (!currentScore.hierarchicalScores || currentScore.hierarchicalScores.length === 0)}}">
+      <view class="score-input-group">
+        <view class="input-label">总分</view>
+        <input class="score-input" type="digit" placeholder="请输入总分" 
+               value="{{currentScore.totalScore}}" 
+               bindinput="onTotalScoreInput" />
+        <text class="max-score">/ {{assignmentInfo.totalMaxScore}}</text>
+      </view>
+      
+      <view class="custom-questions">
+        <view class="sub-title">分题得分</view>
+        <view class="custom-question-list">
+          <view class="custom-question-item" 
+                wx:for="{{assignmentInfo.scoringOptions.customScores}}" wx:key="index"
+                wx:for-item="questionScore" wx:for-index="qIndex">
+            <view class="question-label">第{{qIndex + 1}}题</view>
+            <input class="custom-score-input" type="digit" 
+                   placeholder="0" 
+                   value="{{currentScore.questionScores[qIndex]}}"
+                   bindinput="onQuestionScoreInput" 
+                   data-index="{{qIndex}}" />
+            <text class="custom-max-score">/ {{questionScore}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 评语 -->
+    <view class="comment-section">
+      <view class="comment-label">评语</view>
+      <textarea class="comment-input" placeholder="请输入评语（可选）" 
+                value="{{currentScore.comment}}" 
+                bindinput="onCommentInput" 
+                maxlength="200" />
+      <view class="comment-count">{{commentLength}}/200</view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="save-btn" bindtap="onSaveScore" disabled="{{!canSave}}">
+        {{isEditing ? '更新成绩' : '保存成绩'}}
+      </button>
+      <button class="next-btn" bindtap="onNextStudent" disabled="{{!hasNextStudent}}">
+        下一个学生
+      </button>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!currentStudent}}">
+    <view class="empty-text">请选择要批改的学生</view>
+  </view>
+
+
+</view>

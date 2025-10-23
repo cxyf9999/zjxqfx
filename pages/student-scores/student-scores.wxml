@@ -1,0 +1,192 @@
+<!--pages/student-scores/student-scores.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header" style="width: 506rpx; display: flex; box-sizing: border-box">
+    <view class="student-info">
+      <text class="student-name">{{studentInfo.name}}</text>
+      <text class="student-number">学号：{{studentInfo.studentNumber}}</text>
+      <!-- 分享数据提示 -->
+      <text class="share-tip" wx:if="{{isSharedData}}">📱 分享数据 {{compressionInfo}}</text>
+    </view>
+    <view class="header-actions">
+      <button class="btn-share" bindtap="showShare" style="width: 185rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">分享成绩</button>
+    </view>
+  </view>
+
+  <!-- 成绩概览 -->
+  <view class="score-overview">
+    <view class="overview-item">
+      <text class="overview-label">总作业数</text>
+      <text class="overview-value">{{scoreOverview.totalAssignments}}</text>
+    </view>
+    <view class="overview-item">
+      <text class="overview-label">已完成</text>
+      <text class="overview-value">{{scoreOverview.completedAssignments}}</text>
+    </view>
+    <view class="overview-item">
+      <text class="overview-label">平均分</text>
+      <text class="overview-value">{{scoreOverview.averageScore}}</text>
+    </view>
+    <view class="overview-item">
+      <text class="overview-label">错题总数</text>
+      <text class="overview-value error-count">{{scoreOverview.totalErrors}}</text>
+    </view>
+  </view>
+
+  <!-- 作业列表 -->
+  <view class="assignments-section">
+    <view class="section-header">
+      <text class="section-title">作业成绩详情</text>
+      <view class="filter-tabs">
+        <text class="filter-tab {{currentFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchFilter">全部</text>
+        <text class="filter-tab {{currentFilter === 'completed' ? 'active' : ''}}" data-filter="completed" bindtap="switchFilter">已完成</text>
+        <text class="filter-tab {{currentFilter === 'pending' ? 'active' : ''}}" data-filter="pending" bindtap="switchFilter">未完成</text>
+      </view>
+    </view>
+
+    <view class="assignments-list">
+      <view class="assignment-item" wx:for="{{filteredAssignments}}" wx:key="id">
+        <view class="assignment-header" bindtap="toggleAssignmentDetail" data-id="{{item.id}}">
+          <view class="assignment-info">
+            <text class="assignment-name">{{item.title}}</text>
+            <text class="assignment-date">{{item.date}}</text>
+          </view>
+          <view class="assignment-score">
+            <text class="score-text">{{item.totalScore}}/{{item.maxScore}}</text>
+            <text class="expand-icon {{item.expanded ? 'expanded' : ''}}">▼</text>
+          </view>
+        </view>
+
+        <!-- 详细得分情况 -->
+        <view class="assignment-detail" wx:if="{{item.expanded}}">
+          <view class="score-breakdown">
+            <text class="breakdown-title">得分详情：</text>
+            
+            <!-- 题目列表 -->
+            <view class="question-level level-1" wx:for="{{item.questions}}" wx:key="id" wx:for-item="question">
+              <view class="question-header" bindtap="toggleQuestionDetail" data-assignment-id="{{item.id}}" data-question-id="{{question.id}}">
+                <text class="question-title">{{question.title}}</text>
+                <view class="question-score">
+                  <text class="score-earned">{{question.calculatedScore || question.score || 0}}</text>
+                  <text class="score-separator">/</text>
+                  <text class="score-total">{{question.maxScore}}</text>
+                  <text class="expand-icon {{question.expanded ? 'expanded' : ''}}">▼</text>
+                </view>
+              </view>
+
+              <!-- 子题目 -->
+              <view class="question-level level-2" wx:if="{{question.expanded && question.subQuestions}}" wx:for="{{question.subQuestions}}" wx:key="id" wx:for-item="subQuestion">
+                <view class="question-header" bindtap="toggleSubQuestionDetail" data-assignment-id="{{item.id}}" data-question-id="{{question.id}}" data-sub-question-id="{{subQuestion.id}}">
+                  <text class="question-title">{{subQuestion.title}}</text>
+                  <view class="question-score">
+                    <text class="score-earned">{{subQuestion.calculatedScore || subQuestion.score || 0}}</text>
+                    <text class="score-separator">/</text>
+                    <text class="score-total">{{subQuestion.maxScore}}</text>
+                    <text class="expand-icon {{subQuestion.expanded ? 'expanded' : ''}}">▼</text>
+                  </view>
+                </view>
+
+                <!-- 子子题目 -->
+                <view class="question-level level-3" wx:if="{{subQuestion.expanded && subQuestion.subQuestions}}" wx:for="{{subQuestion.subQuestions}}" wx:key="id" wx:for-item="subSubQuestion">
+                  <view class="question-header">
+                    <text class="question-title">{{subSubQuestion.title}}</text>
+                    <view class="question-score">
+                      <text class="score-earned">{{subSubQuestion.calculatedScore || subSubQuestion.score || 0}}</text>
+                      <text class="score-separator">/</text>
+                      <text class="score-total">{{subSubQuestion.maxScore}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 错题展示 -->
+          <view class="wrong-questions" wx:if="{{item.wrongQuestions && item.wrongQuestions.length > 0}}">
+            <text class="wrong-title">本作业错题：</text>
+            <view class="wrong-list">
+              <view class="wrong-item" wx:for="{{item.wrongQuestions}}" wx:key="index" wx:for-item="wrongItem">
+                <text class="wrong-question">{{wrongItem.questionPath}}</text>
+                <text class="wrong-reason" wx:if="{{wrongItem.reason}}">{{wrongItem.reason}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 作业详情按钮 -->
+          <view class="assignment-actions">
+            <button class="btn-detail" data-assignment-id="{{item.id}}" bindtap="viewAssignmentDetail">查看作业详情</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 错题汇总 -->
+  <view class="errors-summary" wx:if="{{wrongQuestions.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">错题汇总</text>
+      <view class="error-statistics">
+        <text class="error-count">共{{wrongQuestions.length}}道错题</text>
+        <view class="level-stats">
+          <text class="level-stat level1" wx:if="{{errorStats.level1 > 0}}">一级: {{errorStats.level1}}</text>
+          <text class="level-stat level2" wx:if="{{errorStats.level2 > 0}}">二级: {{errorStats.level2}}</text>
+          <text class="level-stat level3" wx:if="{{errorStats.level3 > 0}}">三级: {{errorStats.level3}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="errors-list">
+      <view class="error-item {{item.level}}" wx:for="{{wrongQuestions}}" wx:key="index">
+        <view class="error-header">
+          <text class="error-assignment">{{item.assignmentTitle}}</text>
+          <view class="error-question-container">
+            <text class="level-indicator {{item.level}}">{{item.levelText}}</text>
+            <text class="error-question">{{item.questionPath}}</text>
+          </view>
+        </view>
+        <text class="error-reason" wx:if="{{item.reason}}">错误原因：{{item.reason}}</text>
+        <view class="error-score">
+          <text class="score-lost">失分：{{item.lostScore}}分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{filteredAssignments.length === 0}}">
+    <text class="empty-text">暂无成绩记录</text>
+  </view>
+</view>
+
+<!-- 分享弹窗 -->
+<view class="modal-overlay" wx:if="{{showShareModal}}" bindtap="hideShare">
+  <view class="modal-content share-modal" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">分享成绩</text>
+      <text class="modal-close" bindtap="hideShare">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="share-options">
+        <button class="share-option" bindtap="shareToWeChat">
+          <text class="share-icon">📱</text>
+          <text class="share-text">微信分享</text>
+        </button>
+        <button class="share-option" bindtap="copyText">
+          <text class="share-icon">📋</text>
+          <text class="share-text">复制文本</text>
+        </button>
+        <button class="share-option" bindtap="saveImage">
+          <text class="share-icon">🖼️</text>
+          <text class="share-text">保存图片</text>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 隐藏的canvas用于生成图片 -->
+<canvas 
+  id="scoreCanvas" 
+  type="2d" 
+  style="position: fixed; top: -9999px; left: -9999px; width: 375px; height: 900px;"
+></canvas>
