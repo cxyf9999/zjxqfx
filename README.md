@@ -380,3 +380,14 @@ miniprogram/
 - 兼容限制：`payload` 建议最大长度 ≤ 1800（URL编码后）；超过时内容将逐步截断并在标题中标注。
 - 建议用法：同学或家长查看建议使用图片；需要可复制的详细错题建议使用文本+链接。
 - 后续计划：接入云端同步 `/sync/upload`、`/sync/download`，支持分享数据落库与多端查看。
+## 效果展示
+![df29f9d8f2344a003b8e6e6a6a2333c5](https://github.com/user-attachments/assets/949068ea-d178-43be-95c8-90ce05824fac)
+![3c66a4f1f559269d15fe234ed9edd170](https://github.com/user-attachments/assets/e2fc807f-2e30-4b47-bf1e-0351fb5de227)
+![c98e0de26c5bd8d844e61ee51fe03f27](https://github.com/user-attachments/assets/53c0f542-9558-4b13-8ce2-fd84b4265ffc)
+![3be59647fcfa2d7241b13334a263a52c](https://github.com/user-attachments/assets/38b89a52-b9eb-4345-bc6d-118e33e335fe)
+![60dc40cc01b9b1fb1e45663dd650e18b](https://github.com/user-attachments/assets/6ff05cd4-2506-4a7e-8f1b-1f2d1ad6b195)
+![819134ce4485f4cd4fe5daf4bcb978a8](https://github.com/user-attachments/assets/91eed72c-7eca-48f5-951f-0f713b0f758d)
+![c2c7b72ecebca39d2a423faa91f8e051](https://github.com/user-attachments/assets/ade59f18-de7f-4768-ae5f-3d7c2cd95d73)
+![8e9362ae7deaa0dab206ba760e19a423](https://github.com/user-attachments/assets/ace44b3d-e5ba-4021-86cd-59b1b4c4f88a)
+![1bd8f9828d0242d7c3d2e090c0ace208](https://github.com/user-attachments/assets/9a8ee807-50fd-486b-a20a-1ad1f9353b94)
+![94f574adc051491413b41c1a72b31cb8](https://github.com/user-attachments/assets/0820be02-1805-48c4-9c8f-781b425862fd)
